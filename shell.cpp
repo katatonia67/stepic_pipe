@@ -207,6 +207,12 @@ int main(int argc, char **argv){
 		Command &cmd = commands[0];
 		vector<const char *> args = cmd.getArgsList();
 		char *const *args_list_head = (char * const *)(&args[0]);
+
+		//redirect stdout to file
+		int fd_out = open("./result.out", O_RDWR | O_CREAT | O_TRUNC, 0666);
+		dup2(fd_out, STDOUT_FILENO);
+		close(fd_out);
+
 		execvp(cmd.program.c_str(), args_list_head);
 		return 0;
 	}
